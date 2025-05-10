@@ -32,7 +32,7 @@ func test_standard0() -> void:
 	cfg2.save(config_path)
 
 
-class GlobalCategory extends ConfigCategory:
+class GlobalCategory extends BaseConfigCategory:
 	func _init(config_file: ConfigFile) -> void:
 		super._init(config_file, "global")
 
