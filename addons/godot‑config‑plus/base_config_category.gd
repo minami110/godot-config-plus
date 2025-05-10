@@ -1,4 +1,4 @@
-class_name ConfigCategory extends RefCounted
+class_name BaseConfigCategory extends RefCounted
 
 var __file: ConfigFile
 var __section: String
