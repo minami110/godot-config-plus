@@ -6,11 +6,15 @@ var __type: Variant.Type
 var __default: Variant
 
 # ----- Signals -----
+
+## Emitted whenever the **committed** value changes.
 @warning_ignore("unused_signal")
 signal current_changed(new_value: Variant)
 
 
-# Public
+# ----- Public -----
+
+## @param  default_value  The initial (and factory‑default) value.
 func _init(default_value: Variant) -> void:
 	__assert_type(default_value)
 
@@ -18,21 +22,26 @@ func _init(default_value: Variant) -> void:
 	__default = default_value
 
 
-## Get's the default value
+## Returns the factory default value.
 func get_default() -> Variant:
 	return __default
 
-## Get the stored value Variant.Type
+## Returns the Variant.Type stored at construction.
 func get_type() -> Variant.Type:
 	return __type
+
+## Returns **true** if the committed value differs from the default.
+func is_modified() -> bool:
+	return get_current() != get_default()
 
 ## Reset to default value
 func reset_to_default() -> void:
 	_on_revert_default(__default)
 
 
-# Virtuals
-## Get's the committed current value
+# ----- Abstract interface -----
+
+## Returns the current *committed* value.
 func get_current() -> Variant:
 	__assert_not_implemented()
 	return null
