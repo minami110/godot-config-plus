@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="godot‑config‑toolkit"
+config/name="godot‑config‑plus"
 config/tags=PackedStringArray("plugin")
 config/features=PackedStringArray("4.4", "GL Compatibility")
 
