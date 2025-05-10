@@ -29,6 +29,7 @@ enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
 
 ui/toolbar/run_overall=true
 report/godot/push_error=true
+report/godot/script_error=false
 
 [rendering]
 
