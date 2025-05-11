@@ -16,8 +16,10 @@ func test_standard0() -> void:
 	assert_int(global1.foo.get_current()).is_equal(2)
 
 	# 値を書き込んで保存する
-	global1.is_development.set_current(true)
-	global1.foo.set_current(3)
+	global1.is_development.set_staged(true)
+	global1.foo.set_staged(3)
+
+	global1.apply_all_staged()
 	cfg1.save(config_path)
 
 	# 新しく読み込む
@@ -27,8 +29,9 @@ func test_standard0() -> void:
 	assert_bool(global2.is_development.get_current()).is_true()
 	assert_int(global2.foo.get_current()).is_equal(3)
 
-	# 鯛を書き込んで保存する
+	# 値を書き込んで保存する
 	global2.foo.reset_to_default()
+	global2.foo.apply_staged()
 	cfg2.save(config_path)
 
 
@@ -37,14 +40,14 @@ class GlobalCategory extends BaseConfigCategory:
 		super._init(config_file, "global")
 
 
-	var is_development: LiveConfigValue:
+	var is_development: StagedConfigValue:
 		get:
-			return _get_live("is_development", false)
+			return _get_staged("is_development", false)
 
-	var locale: LiveConfigValue:
+	var locale: StagedConfigValue:
 		get:
-			return _get_live("locale", "ja_JP")
+			return _get_staged("locale", "ja_JP")
 
-	var foo: LiveConfigValue:
+	var foo: StagedConfigValue:
 		get:
-			return _get_live("foo", 2)
+			return _get_staged("foo", 2)

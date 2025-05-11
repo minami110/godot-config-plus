@@ -11,6 +11,9 @@ func _init(config_file: ConfigFile, section: String) -> void:
 
 # ----- Public -----
 
+func get_keys() -> Array[String]:
+	return __map.keys()
+
 func reset_all_to_default() -> void:
 	for v: BaseConfigValue in __map.values():
 		v.reset_to_default()
@@ -28,9 +31,6 @@ func revert_all_staged() -> void:
 
 # ----- Protected -----
 
-##
-func _get_live(key: String, default: Variant) -> LiveConfigValue:
-	return __get_config_value(key, default, &"live")
 
 ##
 func _get_staged(key: String, default: Variant) -> StagedConfigValue:
@@ -40,7 +40,7 @@ func _get_staged(key: String, default: Variant) -> StagedConfigValue:
 # ----- Private -----
 
 # ConfigValue の Current が変更された
-# NOTE: Staged のばあいは Apply が呼ばれた
+# NOTE: Staged のばあいは Apply が呼ばれたとき
 func __changed_current_value(new_value: Variant, key: String) -> void:
 	# デフォルトから変更されている場合は書き込む
 	var config_value := __map[key]
@@ -61,9 +61,7 @@ func __get_config_value(key: String, default: Variant, cls: StringName) -> BaseC
 		return __map[key]
 
 	var new_config_value: BaseConfigValue
-	if cls == &"live":
-		new_config_value = LiveConfigValue.new(default)
-	elif cls == &"staged":
+	if cls == &"staged":
 		new_config_value = StagedConfigValue.new(default)
 	else:
 		assert(false, "Invalid program. missing class: %s" % cls)
@@ -74,10 +72,7 @@ func __get_config_value(key: String, default: Variant, cls: StringName) -> BaseC
 	if __file.has_section_key(__section, key):
 		var raw: Variant = __file.get_value(__section, key)
 
-		if new_config_value is LiveConfigValue:
-			new_config_value.set_current(raw)
-
-		elif new_config_value is StagedConfigValue:
+		if new_config_value is StagedConfigValue:
 			new_config_value.set_staged(raw)
 			new_config_value.apply_staged()
 
