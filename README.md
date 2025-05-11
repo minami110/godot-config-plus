@@ -46,7 +46,7 @@ func save() -> void:
 
 ### A category
 ```gdscript
-class_name AccessibilityCategory extends ConfigCategory
+class_name AccessibilityCategory extends BaseConfigCategory
 
 func _init(cf: ConfigFile) -> void:
     super._init(cf, "accessibility")   # [accessibility] section
@@ -58,11 +58,9 @@ var arachnophobia: StagedConfigValue:
 
 ### Gameplay usage
 ```gdscript
-# Hide spiders if the arachnophobia is ON
-if Config.accessibility.arachnophobia.get_current():
-    %SpriteSpider.hide()
-
-Config.accessibility.arachnophobia.current_changed.connect(func(enabled: bool) -> void:
+# current_changed.connect wrappper
+# invokes it once with the current commited value
+Config.accessibility.arachnophobia.subscribe_current(func(enabled: bool) -> void:
     %SpriteSpider.visible = not enabled
 )
 ```
