@@ -65,26 +65,30 @@ Config.accessibility.arachnophobia.subscribe_current(func(enabled: bool) -> void
 )
 ```
 
-### Options‑menu workflow (staged)
+### UI usage
 ```gdscript
 func _on_arachno_checkbox_toggled(enable: bool) -> void:
+    # Staging value (not update current value)
     Config.accessibility.arachnophobia.set_staged(enable)
-    apply_button.disabled = !Config.accessibility.arachnophobia.is_staging()
 
     # Live apply
     # Config.accessibility.arachnophobia.apply_staged()
 
 func _on_arachno_reset_to_default_pressed() -> void:
+    # Staging default value
     Config.accessibility.arachnophobia.reset_to_default()
+
+    # Live apply
     # Config.accessibility.arachnophobia.apply_staged()
 
 func _on_apply_all_pressed() -> void:
+    # Commit staging value will updated current value
     Config.accessibility.apply_all_staged()
     Config.save()
 
 func _on_revert_all_pressed() -> void:
+    # Revert stating value
     Config.accessibility.revert_all_staged()
-    Config.save()
 ```
 
 ### File output example
