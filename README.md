@@ -1,4 +1,4 @@
-# ConfigPlus - Minimal, Stage‑Aware Game Settings for Godot 4
+# ConfigPlus - Minimal, Stage‑Aware Game config value for Godot 4
 ## Features
 * **Default / staged / committed layers** – pick *instant* or *staged* per key.
 * **Signals out of the box** – refresh UI via `current_changed` or `staged_changed`.
