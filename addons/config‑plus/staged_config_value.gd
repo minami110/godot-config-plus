@@ -41,6 +41,18 @@ func revert_staged() -> void:
 		__staged = __current
 		staged_changed.emit(__current)
 
+## Subscribes callable to the **current_changed** signal and immediately
+## invokes it once with the current commited value
+func subscribe_current(callable: Callable) -> void:
+	if current_changed.is_connected(callable) == false:
+		current_changed.connect(callable)
+		callable.call(get_current())
+
+## Disconnect callable from the **current_changed** signal
+func unsubscribe_current(callable: Callable) -> void:
+	if current_changed.is_connected(callable):
+		current_changed.disconnect(callable)
+
 
 # Overrides
 func get_current() -> Variant: return __current
