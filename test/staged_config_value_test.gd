@@ -89,4 +89,21 @@ func test_current_changed() -> void:
 	c1.reset_to_default()
 	c1.apply_staged()
 
-	assert_array(result).is_equal([30, 10])
+        assert_array(result).is_equal([30, 10])
+
+func test_subscribe_and_unsubscribe_current() -> void:
+        var result := []
+        var callback := func(v: Variant) -> void:
+                result.push_back(v)
+
+        var c1 := StagedConfigValue.new(1)
+
+        c1.subscribe_current(callback)
+        c1.set_staged(2)
+        c1.apply_staged()
+
+        c1.unsubscribe_current(callback)
+        c1.set_staged(3)
+        c1.apply_staged()
+
+        assert_array(result).is_equal([1, 2])

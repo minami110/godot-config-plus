@@ -30,9 +30,40 @@ func test_standard0() -> void:
 	assert_int(global2.foo.get_current()).is_equal(3)
 
 	# 値を書き込んで保存する
-	global2.foo.reset_to_default()
-	global2.foo.apply_staged()
-	cfg2.save(config_path)
+        global2.foo.reset_to_default()
+        global2.foo.apply_staged()
+        cfg2.save(config_path)
+
+func test_get_keys_and_reset_and_revert() -> void:
+        var cfg := ConfigFile.new()
+        var cat := GlobalCategory.new(cfg)
+
+        # プロパティへアクセスして登録
+        cat.is_development
+        cat.locale
+        cat.foo
+
+        assert_array(cat.get_keys().sorted()).is_equal([
+                "foo",
+                "is_development",
+                "locale",
+        ])
+
+        cat.is_development.set_staged(true)
+        cat.foo.set_staged(10)
+        cat.apply_all_staged()
+
+        cat.is_development.set_staged(false)
+        cat.foo.set_staged(20)
+        cat.revert_all_staged()
+        assert_bool(cat.is_development.is_staging()).is_false()
+        assert_int(cat.foo.get_staged()).is_equal(10)
+
+        cat.is_development.set_staged(true)
+        cat.foo.set_staged(30)
+        cat.reset_all_to_default()
+        assert_bool(cat.is_development.get_staged()).is_false()
+        assert_int(cat.foo.get_staged()).is_equal(2)
 
 
 class GlobalCategory extends BaseConfigCategory:
