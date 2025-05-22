@@ -1,4 +1,7 @@
 # ConfigPlus - Minimal, Stage‑Aware Game config value for Godot 4
+[![Godot 4.4](https://img.shields.io/badge/Godot-4.4-478cbf?logo=godot-engine&logoColor=white)](https://godotengine.org)
+[![gdunit4-tests](https://github.com/minami110/godot-config-plus/actions/workflows/gdunit4-tests.yml/badge.svg)](https://github.com/minami110/godot-config-plus/actions/workflows/gdunit4-tests.yml)
+
 ## Features
 * **Default / staged / committed layers** – pick *instant* or *staged* per key.
 * **Signals out of the box** – refresh UI via `current_changed` or `staged_changed`.
