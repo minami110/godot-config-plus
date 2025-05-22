@@ -9,7 +9,6 @@ func test_standard0() -> void:
 	var cfg1 := ConfigFile.new()
 	cfg1.save(config_path)
 
-
 	# デフォルトの値の確認
 	var global1 := GlobalCategory.new(cfg1)
 	assert_bool(global1.is_development.get_current()).is_false()
@@ -33,6 +32,45 @@ func test_standard0() -> void:
 	global2.foo.reset_to_default()
 	global2.foo.apply_staged()
 	cfg2.save(config_path)
+
+
+func test_get_keys_and_reset_and_revert() -> void:
+	var cfg := ConfigFile.new()
+	var cat := GlobalCategory.new(cfg)
+
+	# 初期状態では配列は空
+	var keys := cat.get_keys()
+	keys.sort()
+	assert_array(keys).is_equal([])
+
+	# 値の確認をすると key が生成される
+	assert_bool(cat.is_development.get_current()).is_false()
+	assert_str(cat.locale.get_current()).is_equal("ja_JP")
+	assert_int(cat.foo.get_current()).is_equal(2)
+
+	keys = cat.get_keys()
+	keys.sort()
+	assert_array(keys).is_equal([
+		"foo",
+		"is_development",
+		"locale",
+	])
+
+	cat.is_development.set_staged(true)
+	cat.foo.set_staged(10)
+	cat.apply_all_staged()
+
+	cat.is_development.set_staged(false)
+	cat.foo.set_staged(20)
+	cat.revert_all_staged()
+	assert_bool(cat.is_development.is_staging()).is_false()
+	assert_int(cat.foo.get_staged()).is_equal(10)
+
+	cat.is_development.set_staged(true)
+	cat.foo.set_staged(30)
+	cat.reset_all_to_default()
+	assert_bool(cat.is_development.get_staged()).is_false()
+	assert_int(cat.foo.get_staged()).is_equal(2)
 
 
 class GlobalCategory extends BaseConfigCategory:
