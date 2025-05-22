@@ -44,9 +44,9 @@ func test_get_keys_and_reset_and_revert() -> void:
 	assert_array(keys).is_equal([])
 
 	# 値の確認をすると key が生成される
-	assert_bool(cat.is_development).is_false()
-	assert_str(cat.locale).is_equal("ja_JP")
-	assert_int(cat.foo).is_equal(2)
+	assert_bool(cat.is_development.get_current()).is_false()
+	assert_str(cat.locale.get_current()).is_equal("ja_JP")
+	assert_int(cat.foo.get_current()).is_equal(2)
 
 	keys = cat.get_keys()
 	keys.sort()
